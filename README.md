@@ -131,7 +131,6 @@ gunzip hgcal_electron_data_0001.h5.gz
 ```
 
 The dataset consists of ~648k simulated electron events in the energy range 10–350 GeV. See [`data/README.md`](data/README.md) for the full HDF5 schema. Large files (`.h5`, `.npy`, `.parquet`, `.pth`) are excluded from this repository via `.gitignore`.
----
 
 ## Reproducing results
 
