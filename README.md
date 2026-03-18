@@ -1,6 +1,6 @@
 # Electron Energy Regression in the CMS High-Granularity Calorimeter Prototype
 
-A 3D convolutional neural network (CNN) for electron energy regression in the CMS High-Granularity Calorimeter (HGCAL) prototype, trained on simulated testbeam data. The model learns to correct for shower leakage and non-uniformities, achieving better energy resolution than the simple raw-sum baseline across the full beam energy range (10–350 GeV). Developed as a university project for a Machine Learning Techniques for Physics course, with training and inference running on Google Colab free-tier resources.
+A 3D convolutional neural network (CNN) for electron energy regression in the CMS High-Granularity Calorimeter (HGCAL) prototype, trained on simulated testbeam data. The model learns to correct for shower leakage and non-uniformities, achieving better energy resolution than the simple raw-sum baseline across the full beam energy range (10–350 GeV). Developed as a university project for a Machine Learning Techniques for Physics course, with training and inference running on Google Colab free-tier resources. Inspired by the original work: arXiv:2309.06582
 
 ---
 
@@ -120,10 +120,17 @@ Notebooks 03–05 were developed on Google Colab with GPU acceleration (T4). Mou
 
 ## Data
 
-The raw dataset (`hgcal_electron_data_0001.h5`) contains ~648k simulated electron events in the energy range 10–350 GeV. See [`data/README.md`](data/README.md) for the full schema and access instructions.
+The raw dataset is publicly available on Zenodo:
 
-Large files (`.h5`, `.npy`, `.parquet`, `.pth`) are excluded from this repository via `.gitignore`.
+**Bhargav Joshi, Alpana Alpana (2023). *Electron Energy Regression in High-Granularity Calorimeter Prototype*. Zenodo.**
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7504164.svg)](https://doi.org/10.5281/zenodo.7504164)
 
+The file used in this project is `hgcal_electron_data_0001.h5.gz` (2.8 GB compressed). Extract it before use:
+```bash
+gunzip hgcal_electron_data_0001.h5.gz
+```
+
+The dataset consists of ~648k simulated electron events in the energy range 10–350 GeV. See [`data/README.md`](data/README.md) for the full HDF5 schema. Large files (`.h5`, `.npy`, `.parquet`, `.pth`) are excluded from this repository via `.gitignore`.
 ---
 
 ## Reproducing results
@@ -152,4 +159,7 @@ python scripts/resolution_fit.py
 
 ## Citation / acknowledgements
 
-This work uses simulated CMS HGCAL testbeam data. The HGCAL detector is described in the CMS Technical Design Report: [CMS-TDR-019](https://cds.cern.ch/record/2293646).
+This work is inspired by and uses the dataset from:
+> Bhargav Joshi et al. (2023). *Electron Energy Regression in High-Granularity Calorimeter Prototype*. [arXiv:2309.06582](https://arxiv.org/abs/2309.06582)
+
+The HGCAL detector is described in the CMS Technical Design Report: [CMS-TDR-019](https://cds.cern.ch/record/2293646).
