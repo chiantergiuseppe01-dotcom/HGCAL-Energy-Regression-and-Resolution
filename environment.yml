@@ -1,0 +1,21 @@
+name: hgcal
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - numpy>=1.24
+  - scipy>=1.11
+  - h5py>=3.9
+  - matplotlib>=3.8
+  - plotly>=5.18
+  - pyarrow>=14.0
+  - jupyterlab>=4.0
+  - ipykernel>=6.0
+  - root>=6.28          # includes RooFit; provided by conda-forge
+  - pip
+  - pip:
+    - awkward>=2.5
+    - torch>=2.1
+    - torchvision>=0.16
+    - torchinfo>=1.8

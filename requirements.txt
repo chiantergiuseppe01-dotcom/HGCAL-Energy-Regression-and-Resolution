@@ -1,0 +1,24 @@
+# Core scientific stack
+numpy>=1.24
+scipy>=1.11
+
+# HEP data formats
+h5py>=3.9
+awkward>=2.5
+pyarrow>=14.0       # backend for awkward parquet I/O
+
+# Deep learning
+torch>=2.1
+torchvision>=0.16
+torchinfo>=1.8      # model summary (used in CNN notebook)
+
+# Visualisation
+matplotlib>=3.8
+plotly>=5.18
+
+# Notebook environment
+jupyterlab>=4.0
+ipykernel>=6.0
+
+# ROOT/RooFit is NOT listed here — install via conda (see environment.yml) or
+# a pre-built binary from https://root.cern/install
