@@ -1,6 +1,6 @@
 # Electron Energy Regression in the CMS High-Granularity Calorimeter Prototype
 
-A 3D convolutional neural network (CNN) for electron energy regression in the CMS High-Granularity Calorimeter (HGCAL) prototype, trained on simulated testbeam data. The model learns to correct for shower leakage and non-uniformities, achieving better energy resolution than the simple raw-sum baseline across the full beam energy range (10–370 GeV).
+A 3D convolutional neural network (CNN) for electron energy regression in the CMS High-Granularity Calorimeter (HGCAL) prototype, trained on simulated testbeam data. The model learns to correct for shower leakage and non-uniformities, achieving better energy resolution than the simple raw-sum baseline across the full beam energy range (10–350 GeV). Developed as a university project for a Machine Learning Techniques for Physics course, with training and inference running on Google Colab free-tier resources. Inspired by the original work: arXiv:2309.06582
 
 ---
 
@@ -59,14 +59,14 @@ hgcal-electron-energy-regression/
 
 ## Model architecture (`HGCAL_Net`)
 
-Input: `(B, 1, 28, 26, 26)` voxel tensor — one channel, 28 layers, 26×26 transverse grid.  
+Input: `(B, 1, 28, 15, 15)` voxel tensor — one channel, 28 layers, 15×15 transverse grid.  
 The network combines learned convolutional features with hand-crafted physics observables:
 
 | Block | Details |
 |---|---|
-| Conv1 | `Conv3d(1→32, k=(1,3,3))` — captures transverse patterns within a single layer |
-| Conv2 | `Conv3d(32→64, k=(3,1,1))` + BatchNorm — captures longitudinal shower development |
-| Conv3 | `Conv3d(64→128, k=3, dilation=(1,2,2))` + BatchNorm — wider receptive field |
+| Conv1 | `Conv3d(1→32, k=(1,3,3), padding=(0,1,1)` — captures transverse patterns within a single layer |
+| Conv2 | `Conv3d(32→64, k=(3,1,1)), padding=(1,0,0)` + BatchNorm — captures longitudinal shower development |
+| Conv3 | `Conv3d(64→128, k=3, padding=(1,2,2) dilation=(1,2,2))` + BatchNorm — wider receptive field |
 | Bottleneck | `Conv3d(128→32, k=1)` |
 | Spatial pool | `AdaptiveAvgPool3d((2,4,4))` |
 | Global pool | `AdaptiveAvgPool3d(1)` |
@@ -83,10 +83,9 @@ Energy resolution is extracted by fitting the residual distribution `(E_pred −
 
 | Model | S (%) | C (%) |
 |---|---|---|
-| CNN | — | — |
-| SUM baseline | — | — |
+| CNN | 20.51% | 0.19% |
+| SUM baseline | 21.19% | 0.62% |
 
-*(Fill in your fitted values.)*
 
 ---
 
@@ -111,7 +110,7 @@ Or install a pre-built binary from [https://root.cern/install](https://root.cern
 
 ### Google Colab
 
-Notebooks 03–05 were developed on Google Colab with GPU acceleration (A100). Mount your Google Drive and update the path variables at the top of each notebook. Install `awkward` if not present:
+Notebooks 03–05 were developed on Google Colab with GPU acceleration (T4). Mount your Google Drive and update the path variables at the top of each notebook. Install `awkward` if not present:
 
 ```python
 !pip install awkward
@@ -121,11 +120,17 @@ Notebooks 03–05 were developed on Google Colab with GPU acceleration (A100). M
 
 ## Data
 
-The raw dataset (`hgcal_electron_data_0001.h5`) contains ~648k simulated electron events in the energy range 10–370 GeV. See [`data/README.md`](data/README.md) for the full schema and access instructions.
+The raw dataset is publicly available on Zenodo:
 
-Large files (`.h5`, `.npy`, `.parquet`, `.pth`) are excluded from this repository via `.gitignore`.
+**Bhargav Joshi, Alpana Alpana (2023). *Electron Energy Regression in High-Granularity Calorimeter Prototype*. Zenodo.**
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7504164.svg)](https://doi.org/10.5281/zenodo.7504164)
 
----
+The file used in this project is `hgcal_electron_data_0001.h5.gz` (2.8 GB compressed). Extract it before use:
+```bash
+gunzip hgcal_electron_data_0001.h5.gz
+```
+
+The dataset consists of ~648k simulated electron events in the energy range 10–350 GeV. See [`data/README.md`](data/README.md) for the full HDF5 schema. Large files (`.h5`, `.npy`, `.parquet`, `.pth`) are excluded from this repository via `.gitignore`.
 
 ## Reproducing results
 
@@ -149,6 +154,14 @@ jupyter nbconvert --to notebook --execute notebooks/02_data_analysis.ipynb
 python scripts/resolution_fit.py
 ```
 
+---
+
+## Citation / acknowledgements
+
+This work is inspired by and uses the dataset from:
+> Bhargav Joshi et al. (2023). *Electron Energy Regression in High-Granularity Calorimeter Prototype*. [arXiv:2309.06582](https://arxiv.org/abs/2309.06582)
+
+The HGCAL detector is described in the CMS Technical Design Report: [CMS-TDR-019](https://cds.cern.ch/record/2293646).
 ---
 
 ## Citation / acknowledgements
