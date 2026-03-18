@@ -1,6 +1,6 @@
 # Electron Energy Regression in the CMS High-Granularity Calorimeter Prototype
 
-A 3D convolutional neural network (CNN) for electron energy regression in the CMS High-Granularity Calorimeter (HGCAL) prototype, trained on simulated testbeam data. The model learns to correct for shower leakage and non-uniformities, achieving better energy resolution than the simple raw-sum baseline across the full beam energy range (10–350 GeV).
+A 3D convolutional neural network (CNN) for electron energy regression in the CMS High-Granularity Calorimeter (HGCAL) prototype, trained on simulated testbeam data. The model learns to correct for shower leakage and non-uniformities, achieving better energy resolution than the simple raw-sum baseline across the full beam energy range (10–350 GeV). Developed as a university project for a Machine Learning Techniques for Physics course, with training and inference running on Google Colab free-tier resources.
 
 ---
 
@@ -64,8 +64,8 @@ The network combines learned convolutional features with hand-crafted physics ob
 
 | Block | Details |
 |---|---|
-| Conv1 | `Conv3d(1→32, k=(1,3,3), padding = (0,1,1)` — captures transverse patterns within a single layer |
-| Conv2 | `Conv3d(32→64, k=(3,1,1)), padding = (1,0,0)` + BatchNorm — captures longitudinal shower development |
+| Conv1 | `Conv3d(1→32, k=(1,3,3), padding=(0,1,1)` — captures transverse patterns within a single layer |
+| Conv2 | `Conv3d(32→64, k=(3,1,1)), padding=(1,0,0)` + BatchNorm — captures longitudinal shower development |
 | Conv3 | `Conv3d(64→128, k=3, padding=(1,2,2) dilation=(1,2,2))` + BatchNorm — wider receptive field |
 | Bottleneck | `Conv3d(128→32, k=1)` |
 | Spatial pool | `AdaptiveAvgPool3d((2,4,4))` |
@@ -110,7 +110,7 @@ Or install a pre-built binary from [https://root.cern/install](https://root.cern
 
 ### Google Colab
 
-Notebooks 03–05 were developed on Google Colab with GPU acceleration (A100). Mount your Google Drive and update the path variables at the top of each notebook. Install `awkward` if not present:
+Notebooks 03–05 were developed on Google Colab with GPU acceleration (T4). Mount your Google Drive and update the path variables at the top of each notebook. Install `awkward` if not present:
 
 ```python
 !pip install awkward
@@ -120,7 +120,7 @@ Notebooks 03–05 were developed on Google Colab with GPU acceleration (A100). M
 
 ## Data
 
-The raw dataset (`hgcal_electron_data_0001.h5`) contains ~648k simulated electron events in the energy range 10–370 GeV. See [`data/README.md`](data/README.md) for the full schema and access instructions.
+The raw dataset (`hgcal_electron_data_0001.h5`) contains ~648k simulated electron events in the energy range 10–350 GeV. See [`data/README.md`](data/README.md) for the full schema and access instructions.
 
 Large files (`.h5`, `.npy`, `.parquet`, `.pth`) are excluded from this repository via `.gitignore`.
 
