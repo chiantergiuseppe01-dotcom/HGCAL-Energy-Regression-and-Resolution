@@ -59,14 +59,14 @@ hgcal-electron-energy-regression/
 
 ## Model architecture (`HGCAL_Net`)
 
-Input: `(B, 1, 28, 26, 26)` voxel tensor — one channel, 28 layers, 26×26 transverse grid.  
+Input: `(B, 1, 28, 15, 15)` voxel tensor — one channel, 28 layers, 15×15 transverse grid.  
 The network combines learned convolutional features with hand-crafted physics observables:
 
 | Block | Details |
 |---|---|
-| Conv1 | `Conv3d(1→32, k=(1,3,3))` — captures transverse patterns within a single layer |
-| Conv2 | `Conv3d(32→64, k=(3,1,1))` + BatchNorm — captures longitudinal shower development |
-| Conv3 | `Conv3d(64→128, k=3, dilation=(1,2,2))` + BatchNorm — wider receptive field |
+| Conv1 | `Conv3d(1→32, k=(1,3,3), padding = (0,1,1)` — captures transverse patterns within a single layer |
+| Conv2 | `Conv3d(32→64, k=(3,1,1)), padding = (1,0,0)` + BatchNorm — captures longitudinal shower development |
+| Conv3 | `Conv3d(64→128, k=3, padding=(1,2,2) dilation=(1,2,2))` + BatchNorm — wider receptive field |
 | Bottleneck | `Conv3d(128→32, k=1)` |
 | Spatial pool | `AdaptiveAvgPool3d((2,4,4))` |
 | Global pool | `AdaptiveAvgPool3d(1)` |
@@ -83,10 +83,9 @@ Energy resolution is extracted by fitting the residual distribution `(E_pred −
 
 | Model | S (%) | C (%) |
 |---|---|---|
-| CNN | — | — |
-| SUM baseline | — | — |
+| CNN | 20.51% | 0.19% |
+| SUM baseline | 21.19% | 0.62% |
 
-*(Fill in your fitted values.)*
 
 ---
 
